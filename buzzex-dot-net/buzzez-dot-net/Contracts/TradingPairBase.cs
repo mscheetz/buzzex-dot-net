@@ -42,7 +42,7 @@ namespace buzzez_dot_net.Contracts
         public decimal FeeBuyer { get; set; }
 
         [JsonProperty(PropertyName = "fee_seller")]
-        public decimal feeSeller { get; set; }
+        public decimal FeeSeller { get; set; }
 
         #endregion Properties
     }

@@ -13,48 +13,42 @@ namespace buzzez_dot_net.Contracts
 
     #endregion Usings
 
-    public class Ticker
+    public class Ticker : TickerBase
     {
         #region Properties
 
-        [JsonProperty(PropertyName = "pair_id")]
-        public int PairId { get; set; }
-
-        [JsonProperty(PropertyName = "last")]
-        public decimal Last { get; set; }
-
-        [JsonProperty(PropertyName = "lowest_ask")]
-        public decimal Low { get; set; }
-
-        [JsonProperty(PropertyName = "highest_bid")]
-        public decimal High { get; set; }
-
-        [JsonProperty(PropertyName = "price_24h")]
-        public decimal Price24h { get; set; }
-
-        [JsonProperty(PropertyName = "base_volume")]
-        public decimal BaseVolume { get; set; }
-
-        [JsonProperty(PropertyName = "quote_volume")]
-        public decimal QuoteVolume { get; set; }
-
-        [JsonProperty(PropertyName = "is_frozen")]
-        public decimal IsFrozen { get; set; }
-
-        [JsonProperty(PropertyName = "high_24hr")]
-        public decimal High24h { get; set; }
-
-        [JsonProperty(PropertyName = "low_24hr")]
-        public decimal Low24h { get; set; }
-
-        [JsonProperty(PropertyName = "percent_change")]
-        public decimal PercentChange { get; set; }
-
-        [JsonProperty(PropertyName = "updated")]
-        public long Updated { get; set; }
-
-
-
+        public string Pair { get; set; }
+        
         #endregion Properties
+
+        public Ticker()
+        { }
+
+        public Ticker(string pair, TickerBase tickerBase)
+        {
+            Pair = pair;
+            SetBaseProperties(tickerBase);
+        }
+
+        public Ticker(TickerBase tickerBase)
+        {
+            SetBaseProperties(tickerBase);
+        }
+
+        private void SetBaseProperties(TickerBase tickerBase)
+        {
+            base.BaseVolume = tickerBase.BaseVolume;
+            base.High = tickerBase.High;
+            base.High24h = tickerBase.High24h;
+            base.IsFrozen = tickerBase.IsFrozen;
+            base.Last = tickerBase.Last;
+            base.Low = tickerBase.Low;
+            base.Low24h = tickerBase.Low24h;
+            base.PairId = tickerBase.PairId;
+            base.PercentChange = tickerBase.PercentChange;
+            base.Price24h = tickerBase.Price24h;
+            base.QuoteVolume = tickerBase.QuoteVolume;
+            base.Updated = tickerBase.Updated;
+        }
     }
 }

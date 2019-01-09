@@ -1,24 +1,23 @@
 // -----------------------------------------------------------------------------
-// <copyright file="Depth" company="Matt Scheetz">
+// <copyright file="BuzzexClient" company="Matt Scheetz">
 //     Copyright (c) Matt Scheetz All Rights Reserved
 // </copyright>
-// <author name="Matt Scheetz" date="1/8/2019 8:12:11 PM" />
+// <author name="Matt Scheetz" date="1/8/2019 10:05:31 PM" />
 // -----------------------------------------------------------------------------
 
-namespace buzzez_dot_net.Contracts
+namespace buzzez_dot_net
 {
     #region Usings
 
+    using System;
     using System.Collections.Generic;
+    using System.Text;
 
     #endregion Usings
 
-    public class Depth<T>
+    public class BuzzexClient
     {
         #region Properties
-
-        public Dictionary<string, T> DepthDetail { get; set; }
-
         #endregion Properties
     }
 }
