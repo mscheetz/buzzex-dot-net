@@ -167,30 +167,90 @@ namespace buzzez_dot_net.Repository
             return response;
         }
 
-        public async Task<Depth<DepthDetail>> GetDepth(string pair)
+        public async Task<Depth> GetDepth(string pair)
         {
-            return await OnGetDepth<DepthDetail>(pair);
+            return await OnGetDepth(pair);
         }
 
-        public async Task<Depth<DepthInfo>> GetDepthConverted(string pair)
+        public async Task<DepthDetail> GetDepthConverted(string pair)
         {
-            var result = await OnGetDepth<DepthDetail>(pair);
-            var asks = result.DepthDetail["asks"];
-            var bids = result.DepthDetail["bids"];
+            var result = await OnGetDepth(pair);
+            var asks = result.Asks;
+            var bids = result.Bids;
 
+            var asksInfo = new List<DepthInfo>();
+            var bidsInfo = new List<DepthInfo>();
+            for(var i = 0; i< asks.Count; i++)
+            {
+                var depthInfo = new DepthInfo
+                {
+                    Amount = asks[i][0],
+                    Price = asks[i][1]
+                };
+                asksInfo.Add(depthInfo);
+            }
+            for (var i = 0; i < bids.Count; i++)
+            {
+                var depthInfo = new DepthInfo
+                {
+                    Amount = bids[i][0],
+                    Price = bids[i][1]
+                };
+                bidsInfo.Add(depthInfo);
+            }
 
+            return new DepthDetail { Asks = asksInfo, Bids = bidsInfo };
         }
 
-        private async Task<Depth<T>> OnGetDepth<T>(string pair)
+        private async Task<Depth> OnGetDepth(string pair)
         {
             var endpoint = $"v1/depth/{pair}";
 
             var url = baseUrl + endpoint;
             var headers = GetHeaders();
 
-            var response = await _rest.GetApiStream<Depth<T>>(url, headers);
+            var response = await _rest.GetApiStream<DepthResponse>(url, headers);
 
-            return response;
+            Depth depth = null;
+
+            foreach(var data in response.Datas)
+            {
+                if(depth == null)
+                {
+                    depth = data.Value;
+                    break;
+                }
+            }
+
+            return depth;
+        }
+
+        public async Task<List<Trade>> GetTrades(string pair)
+        {
+            return await OnGetTrades(pair);
+        }
+
+        private async Task<List<Trade>> OnGetTrades(string pair)
+        {
+            var endpoint = $"v1/trades/{pair}";
+
+            var url = baseUrl + endpoint;
+            var headers = GetHeaders();
+
+            var response = await _rest.GetApiStream<Dictionary<string, List<Trade>>>(url, headers);
+
+            var trades = new List<Trade>();
+
+            foreach (var data in response)
+            {
+                if (trades.Count == 0)
+                {
+                    trades = data.Value;
+                    break;
+                }
+            }
+
+            return trades;
         }
 
         #endregion Public Api
