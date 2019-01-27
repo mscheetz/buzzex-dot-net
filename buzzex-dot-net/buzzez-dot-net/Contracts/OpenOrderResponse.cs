@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------------
-// <copyright file="OrderResponse" company="Matt Scheetz">
+// <copyright file="OpenOrderResponse" company="Matt Scheetz">
 //     Copyright (c) Matt Scheetz All Rights Reserved
 // </copyright>
 // <author name="Matt Scheetz" date="1/8/2019 8:26:16 PM" />
@@ -14,11 +14,11 @@ namespace buzzez_dot_net.Contracts
 
     #endregion Usings
 
-    public class OrderResponse : TradeApiBase
+    public class OpenOrderResponse : TradeApiBase
     {
         #region Properties
 
-        [JsonProperty(PropertyName = "orderInfo")]
+        [JsonProperty(PropertyName = "orders")]
         public List<Dictionary<string, OrderBase>> Orders { get; set; }
 
         #endregion Properties

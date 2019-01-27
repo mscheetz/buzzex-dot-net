@@ -21,7 +21,7 @@ namespace buzzez_dot_net.Contracts
         public string Pair { get; set; }
 
         [JsonProperty(PropertyName = "type")]
-        public OrderType Type { get; set; }
+        public Side Type { get; set; }
 
         [JsonProperty(PropertyName = "amount")]
         public decimal Amount { get; set; }

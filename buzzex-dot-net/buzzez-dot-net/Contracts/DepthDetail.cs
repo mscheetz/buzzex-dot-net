@@ -18,6 +18,8 @@ namespace buzzez_dot_net.Contracts
     {
         #region Properties
 
+        public string Pair { get; set; }
+
         public List<DepthInfo> Asks { get; set; }
 
         public List<DepthInfo> Bids { get; set; }

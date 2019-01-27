@@ -109,9 +109,38 @@ namespace buzzex_dot_net.Tests
         public void GetDepth_Test()
         {
             var pair = "btc_eth";
-            var ticker = _svc.GetDepth(pair).Result;
 
-            Assert.NotNull(ticker);
+            var depth = _svc.GetDepth(pair).Result;
+
+            Assert.NotNull(depth);
+
+            foreach(var kvp in depth)
+            {
+                Assert.True(kvp.Value.Asks.Count > 0);
+                Assert.True(kvp.Value.Bids.Count > 0);
+            }
+        }
+
+        [Fact]
+        public void GetDepth_Converted_Test()
+        {
+            var pair = "btc_eth";
+
+            var depth = _svc.GetDepthConverted(pair).Result;
+
+            Assert.NotNull(depth);
+            Assert.True(depth.Asks.Count > 0);
+            Assert.True(depth.Bids.Count > 0);
+        }
+
+        [Fact]
+        public void GetTrades_Test()
+        {
+            var pair = "btc_eth";
+
+            var trades = _svc.GetTrades(pair).Result;
+
+            Assert.NotNull(trades);
         }
 
         [Fact]

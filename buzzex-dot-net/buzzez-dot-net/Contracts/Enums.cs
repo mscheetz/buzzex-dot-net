@@ -21,7 +21,7 @@ namespace buzzez_dot_net.Contracts
         bid
     }
 
-    public enum OrderType
+    public enum Side
     {
         buy,
         sell

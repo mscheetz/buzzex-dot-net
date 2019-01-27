@@ -19,16 +19,48 @@ namespace buzzez_dot_net
 
     public interface IBuzzexDotNet
     {
+        /// <summary>
+        /// Get information on trading pairs
+        /// </summary>
+        /// <param name="page">Page number</param>
+        /// <returns>Paged response of trading pairs</returns>
         Task<PairResponse> GetInfo(int page);
 
+        /// <summary>
+        /// Get Ticker information for a trading pair
+        /// </summary>
+        /// <param name="pair">Trading pair</param>
+        /// <returns>Ticker information on trading pair</returns>
         Task<List<Dictionary<string, TickerBase>>> GetTicker(string pair);
 
-        Task<Depth> GetDepth(string pair);
+        /// <summary>
+        /// Get order book depth for a trading pair
+        /// </summary>
+        /// <param name="pair">Trading pair</param>
+        /// <returns>Order book depth</returns>
+        Task<Dictionary<string, Depth>> GetDepth(string pair);
 
-        Task<List<Trade>> OnGetTrades(string pair);
+        /// <summary>
+        /// Get recent trades for a trading pair
+        /// </summary>
+        /// <param name="pair">Trading pair</param>
+        /// <returns>Collection of recent trades</returns>
+        Task<List<Trade>> GetTrades(string pair);
 
+        /// <summary>
+        /// Provides balances for current account
+        /// </summary>
+        /// <returns>AccountInfo object</returns>
         Task<AccountInfo> GetBalances();
 
-        Task<bool> PlaceOrder(string pair, TradeType tradeType, decimal price, decimal quantity);
+        /// <summary>
+        /// Place a new order
+        /// </summary>
+        /// <param name="pair">Trading pair</param>
+        /// <param name="side">Trade side</param>
+        /// <param name="price">Price of order</param>
+        /// <param name="quantity">Quantity to trade</param>
+        /// <returns>TBD</returns>
+        Task<bool> PlaceOrder(string pair, Side side, decimal price, decimal quantity);
     }
 }
