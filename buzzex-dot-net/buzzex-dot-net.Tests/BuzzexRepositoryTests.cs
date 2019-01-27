@@ -7,6 +7,7 @@
 
 namespace buzzex_dot_net.Tests
 {
+    using buzzez_dot_net;
     using buzzez_dot_net.Contracts;
     using buzzez_dot_net.Interfaces;
     using buzzez_dot_net.Repository;
@@ -24,7 +25,7 @@ namespace buzzex_dot_net.Tests
     {
         #region Properties
 
-        private IBuzzexRepository _repo;
+        private IBuzzexDotNet _svc;
         private string configPath = "config.json";
         private ApiCredentials _apiCreds;
 
@@ -39,11 +40,11 @@ namespace buzzex_dot_net.Tests
             }
             if (_apiCreds != null || !string.IsNullOrEmpty(_apiCreds.ApiKey))
             {
-                _repo = new BuzzexRepository(_apiCreds);
+                _svc = new BuzzexDotNet(_apiCreds);
             }
             else
             {
-                _repo = new BuzzexRepository();
+                _svc = new BuzzexDotNet();
             }
         }
 
@@ -56,9 +57,61 @@ namespace buzzex_dot_net.Tests
         [Fact]
         public void GetInfo_Test()
         {
-            var info = _repo.GetInfo().Result;
+            var info = _svc.GetInfo().Result;
 
             Assert.NotNull(info);
+        }
+
+        [Fact]
+        public void GetInfo_Converted_Test()
+        {
+            var info = _svc.GetInfoConverted().Result;
+
+            Assert.NotNull(info);
+        }
+
+        [Fact]
+        public void GetInfo_Page_Test()
+        {
+            var page = 2;
+            var info = _svc.GetInfo(page).Result;
+
+            Assert.NotNull(info);
+        }
+
+        [Fact]
+        public void GetInfo_All_Test()
+        {
+            var info = _svc.GetAllInfo().Result;
+
+            Assert.NotNull(info);
+        }
+
+        [Fact]
+        public void GetTicker_Test()
+        {
+            var pair = "btc_eth";
+            var ticker = _svc.GetTicker(pair).Result;
+
+            Assert.NotNull(ticker);
+        }
+
+        [Fact]
+        public void GetTicker_Converted_Test()
+        {
+            var pair = "btc_eth";
+            var ticker = _svc.GetTickerConverted(pair).Result;
+
+            Assert.NotNull(ticker);
+        }
+
+        [Fact]
+        public void GetDepth_Test()
+        {
+            var pair = "btc_eth";
+            var ticker = _svc.GetDepth(pair).Result;
+
+            Assert.NotNull(ticker);
         }
 
         [Fact]

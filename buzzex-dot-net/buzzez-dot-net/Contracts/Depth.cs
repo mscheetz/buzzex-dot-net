@@ -19,7 +19,7 @@ namespace buzzez_dot_net.Contracts
         #region Properties
 
         [JsonProperty(PropertyName = "asks")]
-        public List<List<decimal>> Asks {get;set; }
+        public List<List<decimal>> Asks { get; set; }
 
         [JsonProperty(PropertyName = "bids")]
         public List<List<decimal>> Bids { get; set; }
