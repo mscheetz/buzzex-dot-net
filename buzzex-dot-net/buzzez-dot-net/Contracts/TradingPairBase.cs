@@ -33,7 +33,7 @@ namespace buzzez_dot_net.Contracts
         public decimal MinTotal { get; set; }
 
         [JsonProperty(PropertyName = "hidden")]
-        public decimal Hidden { get; set; }
+        public int Hidden { get; set; }
 
         [JsonProperty(PropertyName = "fee")]
         public decimal Fee { get; set; }

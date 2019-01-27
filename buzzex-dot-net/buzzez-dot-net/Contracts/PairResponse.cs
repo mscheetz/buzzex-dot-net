@@ -21,10 +21,10 @@ namespace buzzez_dot_net.Contracts
         #region Properties
 
         [JsonProperty(PropertyName = "server_time")]
-        public int ServerTime { get; set; }
+        public long ServerTime { get; set; }
 
         [JsonProperty(PropertyName = "pairs")]
-        public Dictionary<string, TradingPairBase> Pairs { get; set; }
+        public List<Dictionary<string, TradingPairBase>> Pairs { get; set; }
 
         [JsonProperty(PropertyName = "meta")]
         public ResponseMeta Meta { get; set; }

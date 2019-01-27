@@ -7,6 +7,10 @@
 
 namespace buzzex_dot_net.Tests
 {
+    using buzzez_dot_net.Contracts;
+    using buzzez_dot_net.Interfaces;
+    using buzzez_dot_net.Repository;
+    using FileRepository;
     #region Usings
 
     using System;
@@ -19,19 +23,43 @@ namespace buzzex_dot_net.Tests
     public class BuzzexRepositoryTests : IDisposable
     {
         #region Properties
+
+        private IBuzzexRepository _repo;
+        private string configPath = "config.json";
+        private ApiCredentials _apiCreds;
+
         #endregion Properties
 
         public BuzzexRepositoryTests()
         {
-
+            IFileRepository _fileRepo = new FileRepository();
+            if (_fileRepo.FileExists(configPath))
+            {
+                _apiCreds = _fileRepo.GetDataFromFile<ApiCredentials>(configPath);
+            }
+            if (_apiCreds != null || !string.IsNullOrEmpty(_apiCreds.ApiKey))
+            {
+                _repo = new BuzzexRepository(_apiCreds);
+            }
+            else
+            {
+                _repo = new BuzzexRepository();
+            }
         }
 
         public void Dispose()
         {
-            throw new NotImplementedException();
         }
 
         #region Tests
+
+        [Fact]
+        public void GetInfo_Test()
+        {
+            var info = _repo.GetInfo().Result;
+
+            Assert.NotNull(info);
+        }
 
         [Fact]
         public void ListListTest()

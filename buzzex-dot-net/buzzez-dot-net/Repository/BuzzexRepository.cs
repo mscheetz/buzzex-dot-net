@@ -7,12 +7,12 @@
 
 namespace buzzez_dot_net.Repository
 {
-    using buzzez_dot_net.Contracts;
     #region Usings
 
+    using buzzez_dot_net.Contracts;
     using buzzez_dot_net.Interfaces;
-    using RESTApiAccess;
-    using RESTApiAccess.Interface;
+   // using RESTApiAccess;
+    //using RESTApiAccess.Interface;
     using System;
     using System.Collections.Generic;
     using System.Linq;
@@ -40,6 +40,14 @@ namespace buzzez_dot_net.Repository
         {
             this.apiKey = apiKey;
             this.apiSecret = apiSecret;
+            LoadRepository();
+        }
+
+        public BuzzexRepository(ApiCredentials apiCredentials)
+        {
+            this.apiKey = apiCredentials.ApiKey;
+            this.apiSecret = apiCredentials.ApiSecret;
+            LoadRepository();
         }
 
         private void LoadRepository()
@@ -70,10 +78,10 @@ namespace buzzez_dot_net.Repository
             {
                 var result = await OnGetInfo(currentPage);
 
-                foreach(var pair in result.Pairs)
-                {
-                    pairDictionary.Add(pair.Key, pair.Value);
-                }
+                //foreach(var pair in result.Pairs)
+                //{
+                //    pairDictionary.Add(pair.Key, pair.Value);
+                //}
                 currentPage++;
                 if (currentPage >= result.Meta.Pagination.TotalPages)
                     lastPage = true;
@@ -93,11 +101,11 @@ namespace buzzez_dot_net.Repository
 
             var tradingPairs = new List<TradingPair>();
 
-            foreach (var pair in result.Pairs)
-            {
-                var tradingPair = new TradingPair(pair.Key, pair.Value);
-                tradingPairs.Add(tradingPair);
-            }
+            //foreach (var pair in result.Pairs)
+            //{
+            //    var tradingPair = new TradingPair(pair.Key, pair.Value);
+            //    tradingPairs.Add(tradingPair);
+            //}
 
             return tradingPairs;
         }
@@ -256,6 +264,48 @@ namespace buzzez_dot_net.Repository
         #endregion Public Api
 
         #region Private Api
+        
+        public async Task<AccountInfo> GetBalance()
+        {
+            return await OnGetBalances();
+        }
+
+        private async Task<AccountInfo> OnGetBalances()
+        {
+            var endpoint = $"v1/trading/getinfo";
+
+            var url = baseUrl + endpoint;
+            var headers = GetHeaders();
+
+            var response = await _rest.GetApiStream<AccountInfo>(url, headers);
+            
+            return response;
+        }
+
+        private async Task<bool> PlaceTrade(string pair, TradeType tradeType, decimal price, decimal quantity)
+        {
+            return await OnPlaceOrder(pair, tradeType, price, quantity);
+        }
+
+        private async Task<bool> OnPlaceOrder(string pair, TradeType tradeType, decimal price, decimal quantity)
+        {
+            var endpoint = $"v1/trading/trade";
+
+            var url = baseUrl + endpoint;
+
+            var data = new Dictionary<string, object>();
+            data.Add("pair", pair);
+            data.Add("type", tradeType.ToString());
+            data.Add("rate", price);
+            data.Add("amount", quantity);
+
+            var headers = GetHeaders();
+
+            var response = await _rest.PostApi<bool, Dictionary<string, object>>(url, data, headers);
+
+            return response;
+        }
+
         #endregion Private Api
 
         #region Private Methods
